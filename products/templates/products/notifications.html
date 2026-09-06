@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | MarketHub</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #111827;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+        }
+
+        .header p {
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .mark-all {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border-left: 5px solid #d1d5db;
+        }
+
+        .notification-card.unread {
+            border-left-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .content h3 {
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .content p {
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        .date {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .read-btn {
+            text-decoration: none;
+            background: #e5e7eb;
+            color: #374151;
+            padding: 9px 13px;
+            border-radius: 7px;
+            white-space: nowrap;
+        }
+
+        .empty {
+            background: white;
+            padding: 60px 30px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 650px) {
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .notification-card {
+                align-items: flex-start;
+            }
+
+            .read-btn {
+                font-size: 12px;
+            }
+
+            .nav-links {
+                gap: 10px;
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="{% url 'home' %}"
+       class="logo">
+        MarketHub
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'product_list' %}">
+            Shop
+        </a>
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'cart' %}">
+            Cart
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="header">
+
+        <div>
+
+            <h1>🔔 Notifications</h1>
+
+            <p>
+                You have {{ unread_count }} unread notification{{ unread_count|pluralize }}.
+            </p>
+
+        </div>
+
+        {% if unread_count > 0 %}
+
+            <a href="{% url 'mark_all_notifications_read' %}"
+               class="mark-all">
+
+                Mark All as Read
+
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="notification-card {% if not notification.is_read %}unread{% endif %}">
+
+                <div class="icon">
+
+                    {% if notification.notification_type == "order" %}
+                        🛒
+                    {% elif notification.notification_type == "shipping" %}
+                        🚚
+                    {% elif notification.notification_type == "delivery" %}
+                        📦
+                    {% elif notification.notification_type == "stock" %}
+                        ⚠️
+                    {% elif notification.notification_type == "account" %}
+                        👤
+                    {% else %}
+                        🔔
+                    {% endif %}
+
+                </div>
+
+
+                <div class="content">
+
+                    <h3>
+
+                        {% if not notification.is_read %}
+                            New notification
+                        {% else %}
+                            Notification
+                        {% endif %}
+
+                    </h3>
+
+                    <p>
+                        {{ notification.message }}
+                    </p>
+
+                    <div class="date">
+
+                        {{ notification.created_at|date:"M d, Y - h:i A" }}
+
+                    </div>
+
+                </div>
+
+
+                {% if not notification.is_read %}
+
+                    <a href="{% url 'mark_notification_read' notification.id %}"
+                       class="read-btn">
+
+                        Mark Read
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🔔
+            </div>
+
+            <h2>
+                No notifications yet
+            </h2>
+
+            <p style="margin-top:10px;color:#6b7280;">
+                When something important happens,
+                your notifications will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

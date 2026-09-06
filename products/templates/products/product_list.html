@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Products | MarketHub</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #f5f7fb;
+
+            color: #172033;
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+
+            background: white;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            padding:
+                18px 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 24px;
+
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #4b5563;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+        }
+
+
+        .nav-links a:hover {
+
+            color: #2563eb;
+
+        }
+
+
+        .cart-link {
+
+            background: #eff6ff;
+
+            color: #2563eb !important;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+        }
+
+
+        .admin-link {
+
+            color: #7c3aed !important;
+
+        }
+
+
+        .logout-link {
+
+            color: #dc2626 !important;
+
+        }
+
+
+        .register-link {
+
+            background: #2563eb;
+
+            color: white !important;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+        }
+
+
+        /* MAIN */
+
+        .container {
+
+            width: 88%;
+
+            max-width: 1250px;
+
+            margin: 45px auto;
+
+        }
+
+
+        .heading {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .heading h1 {
+
+            font-size: 36px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .heading p {
+
+            color: #6b7280;
+
+        }
+
+
+        /* SEARCH AREA */
+
+        .search-box {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px rgba(
+                    0,
+                    0,
+                    0,
+                    0.05
+                );
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .search-form {
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+
+        .search-input {
+
+            flex: 1;
+
+            padding: 15px 18px;
+
+            border:
+                1px solid #d9dee8;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            outline: none;
+
+        }
+
+
+        .search-input:focus {
+
+            border-color: #2563eb;
+
+        }
+
+
+        .search-button {
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding:
+                0 28px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .search-button:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        /* CATEGORIES */
+
+        .categories {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 18px;
+
+        }
+
+
+        .category {
+
+            text-decoration: none;
+
+            background: #f3f4f6;
+
+            color: #374151;
+
+            padding:
+                9px 15px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .category:hover {
+
+            background: #dbeafe;
+
+            color: #2563eb;
+
+        }
+
+
+        .category.active {
+
+            background: #2563eb;
+
+            color: white;
+
+        }
+
+
+        .clear-filter {
+
+            text-decoration: none;
+
+            color: #dc2626;
+
+            padding:
+                9px 15px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* RESULT */
+
+        .result-info {
+
+            margin-bottom: 20px;
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+        }
+
+
+        .result-info strong {
+
+            color: #111827;
+
+        }
+
+
+        /* PRODUCTS */
+
+        .products-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    4,
+                    1fr
+                );
+
+            gap: 22px;
+
+        }
+
+
+        .product-card {
+
+            background: white;
+
+            border-radius: 17px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 30px rgba(
+                    0,
+                    0,
+                    0,
+                    0.05
+                );
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+        }
+
+
+        .product-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 15px 40px rgba(
+                    0,
+                    0,
+                    0,
+                    0.10
+                );
+
+        }
+
+
+        .product-image {
+
+            width: 100%;
+
+            height: 220px;
+
+            object-fit: cover;
+
+            background: #f3f4f6;
+
+        }
+
+
+        .no-image {
+
+            width: 100%;
+
+            height: 220px;
+
+            background: #f3f4f6;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #9ca3af;
+
+        }
+
+
+        .product-body {
+
+            padding: 20px;
+
+        }
+
+
+        .category-label {
+
+            color: #2563eb;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .product-name {
+
+            font-size: 18px;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .description {
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            height: 40px;
+
+            overflow: hidden;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .product-bottom {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+        }
+
+
+        .price {
+
+            color: #111827;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+        }
+
+
+        .view-button {
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding:
+                10px 14px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        .view-button:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        .out-stock {
+
+            color: #dc2626;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* EMPTY */
+
+        .empty {
+
+            background: white;
+
+            padding: 70px 20px;
+
+            text-align: center;
+
+            border-radius: 17px;
+
+        }
+
+
+        .empty h2 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .empty p {
+
+            color: #6b7280;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .empty a {
+
+            display: inline-block;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* FOOTER */
+
+        footer {
+
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 30px;
+
+            margin-top: 70px;
+
+        }
+
+
+        footer p {
+
+            color: #9ca3af;
+
+            font-size: 14px;
+
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1050px) {
+
+            .products-grid {
+
+                grid-template-columns:
+                    repeat(
+                        3,
+                        1fr
+                    );
+
+            }
+
+        }
+
+
+        @media (max-width: 750px) {
+
+            .navbar {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+            }
+
+
+            .nav-links {
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 12px;
+
+            }
+
+
+            .products-grid {
+
+                grid-template-columns:
+                    repeat(
+                        2,
+                        1fr
+                    );
+
+            }
+
+
+            .search-form {
+
+                flex-direction: column;
+
+            }
+
+
+            .search-button {
+
+                padding: 14px;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .products-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+
+    <a
+        href="{% url 'home' %}"
+        class="logo"
+    >
+        MarketHub
+    </a>
+
+
+    <div class="nav-links">
+
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+
+        <a href="{% url 'product_list' %}">
+            Products
+        </a>
+
+
+        <a
+            href="{% url 'cart' %}"
+            class="cart-link"
+        >
+            🛒 Cart
+        </a>
+
+
+        {% if user.is_authenticated %}
+
+
+            <a href="{% url 'my_orders' %}">
+                My Orders
+            </a>
+
+
+            {% if user.is_staff %}
+
+                <a
+                    href="/admin/"
+                    class="admin-link"
+                >
+                    Admin
+                </a>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="logout-link"
+            >
+                Logout
+            </a>
+
+
+        {% else %}
+
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+
+            <a
+                href="{% url 'register' %}"
+                class="register-link"
+            >
+                Register
+            </a>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</nav>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+
+    <div class="heading">
+
+        <h1>
+            Explore Products
+        </h1>
+
+        <p>
+            Find exactly what you're looking for.
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <section class="search-box">
+
+
+        <form
+            method="GET"
+            action="{% url 'product_list' %}"
+            class="search-form"
+        >
+
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search_query }}"
+                placeholder="Search products, categories..."
+                class="search-input"
+            >
+
+
+            <button
+                type="submit"
+                class="search-button"
+            >
+                🔍 Search
+            </button>
+
+
+        </form>
+
+
+        <!-- CATEGORIES -->
+
+        <div class="categories">
+
+
+            <a
+                href="{% url 'product_list' %}"
+                class="category {% if not selected_category %}active{% endif %}"
+            >
+                All Products
+            </a>
+
+
+            {% for category in categories %}
+
+
+                <a
+                    href="?category={{ category|urlencode }}"
+                    class="category {% if selected_category == category %}active{% endif %}"
+                >
+                    {{ category }}
+                </a>
+
+
+            {% endfor %}
+
+
+            {% if search_query or selected_category %}
+
+                <a
+                    href="{% url 'product_list' %}"
+                    class="clear-filter"
+                >
+                    Clear Filters
+                </a>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    {% if search_query %}
+
+        <div class="result-info">
+
+            Search results for:
+
+            <strong>
+                "{{ search_query }}"
+            </strong>
+
+        </div>
+
+    {% elif selected_category %}
+
+        <div class="result-info">
+
+            Showing products in:
+
+            <strong>
+                {{ selected_category }}
+            </strong>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- PRODUCTS -->
+
+    {% if products %}
+
+
+        <div class="products-grid">
+
+
+            {% for product in products %}
+
+
+                <article class="product-card">
+
+
+                    {% if product.image %}
+
+                        <img
+                            src="{{ product.image.url }}"
+                            alt="{{ product.name }}"
+                            class="product-image"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+                            No Image
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="product-body">
+
+
+                        <div class="category-label">
+
+                            {{ product.category }}
+
+                        </div>
+
+
+                        <h2 class="product-name">
+
+                            {{ product.name }}
+
+                        </h2>
+
+
+                        <p class="description">
+
+                            {{ product.description }}
+
+                        </p>
+
+
+                        <div class="product-bottom">
+
+
+                            <div>
+
+                                <div class="price">
+
+                                    ₦{{ product.price|floatformat:2 }}
+
+                                </div>
+
+
+                                {% if product.stock > 0 %}
+
+                                    <small>
+                                        {{ product.stock }}
+                                        available
+                                    </small>
+
+                                {% else %}
+
+                                    <div class="out-stock">
+                                        Out of stock
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <a
+                                href="{% url 'product_detail' product.id %}"
+                                class="view-button"
+                            >
+                                View Product
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+
+            <h2>
+                No products found
+            </h2>
+
+
+            <p>
+                Try a different search term or category.
+            </p>
+
+
+            <a
+                href="{% url 'product_list' %}"
+            >
+                View All Products
+            </a>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 MarketHub. All rights reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

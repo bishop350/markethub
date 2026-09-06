@@ -1,0 +1,1545 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MarketHub | Online Marketplace</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f9fc;
+            color: #1f2937;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 16px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,.15);
+        }
+
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+
+
+        .logo span {
+            color: white;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+
+        .nav-links a {
+            color: #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .nav-links a:hover {
+            color: #60a5fa;
+        }
+
+
+        .nav-button {
+            background: #2563eb;
+            color: white !important;
+            padding: 10px 17px;
+            border-radius: 7px;
+        }
+
+
+        .nav-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =====================================================
+           NOTIFICATION BELL
+        ===================================================== */
+
+        .notification-wrapper {
+            position: relative;
+        }
+
+
+        .notification-link {
+            width: 39px;
+            height: 39px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1f2937;
+            border-radius: 50%;
+            position: relative;
+        }
+
+
+        .notification-link:hover {
+            background: #374151;
+        }
+
+
+        .notification-icon {
+            font-size: 21px;
+        }
+
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 19px;
+            height: 19px;
+            padding: 0 5px;
+            border-radius: 50px;
+            background: #ef4444;
+            color: white;
+            border: 2px solid #111827;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            min-height: 520px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(17,24,39,.96),
+                    rgba(17,24,39,.82),
+                    rgba(17,24,39,.55)
+                ),
+                url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1800&q=85");
+
+            background-size: cover;
+            background-position: center;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+
+            padding: 70px 7%;
+        }
+
+
+        .hero-content {
+            max-width: 620px;
+        }
+
+
+        .hero-label {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+
+        .hero h1 {
+            font-size: 53px;
+            line-height: 1.12;
+            margin-bottom: 22px;
+        }
+
+
+        .hero h1 span {
+            color: #60a5fa;
+        }
+
+
+        .hero p {
+            color: #e5e7eb;
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+
+        .primary-button {
+            background: #2563eb;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .primary-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        .white-button {
+            background: white;
+            color: #111827;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .white-button:hover {
+            background: #e5e7eb;
+        }
+
+
+        /* =====================================================
+           TRANSACTION CARDS
+        ===================================================== */
+
+        .transaction-area {
+            position: absolute;
+            right: 7%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+
+        .transaction-card {
+            background: rgba(255,255,255,.96);
+            color: #111827;
+            width: 240px;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,.2);
+        }
+
+
+        .transaction-card h4 {
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+
+        .transaction-card p {
+            color: #6b7280;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+
+        .transaction-status {
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .transaction-price {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 70px 0;
+        }
+
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+
+        .section-title h2 {
+            font-size: 32px;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+
+        .section-title p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           CATEGORIES
+        ===================================================== */
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+
+        .category-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: .25s;
+        }
+
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: #93c5fd;
+            box-shadow: 0 10px 25px rgba(0,0,0,.07);
+        }
+
+
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 14px;
+        }
+
+
+        .category-card h3 {
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 7px;
+        }
+
+
+        .category-card p {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           HOW TO SHOP
+        ===================================================== */
+
+        .how-to {
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+
+        .step {
+            text-align: center;
+            padding: 30px;
+        }
+
+
+        .step-number {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            margin: 0 auto 18px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+
+        .step h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+
+        .step p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           PRODUCTS
+        ===================================================== */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            transition: .25s;
+        }
+
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,.08);
+        }
+
+
+        .product-image {
+            height: 210px;
+            background: #f3f4f6;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .no-image {
+            font-size: 50px;
+        }
+
+
+        .product-info {
+            padding: 18px;
+        }
+
+
+        .product-category {
+            color: #2563eb;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+
+        .product-info h3 {
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+
+        .product-description {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .product-price {
+            font-size: 17px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+
+        .product-button {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           TRUST SECTION
+        ===================================================== */
+
+        .trust {
+            background: #111827;
+            color: white;
+        }
+
+
+        .trust-grid {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            padding: 55px 6%;
+            gap: 30px;
+        }
+
+
+        .trust-item {
+            text-align: center;
+        }
+
+
+        .trust-icon {
+            font-size: 32px;
+            margin-bottom: 13px;
+        }
+
+
+        .trust-item h3 {
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+
+        .trust-item p {
+            color: #9ca3af;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            background: #0b1120;
+            color: #9ca3af;
+            padding: 50px 7%;
+        }
+
+
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+
+        .footer-brand h2 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+
+        .footer-brand p {
+            max-width: 390px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        .footer-links {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+
+        .footer-links a {
+            color: #d1d5db;
+            font-size: 12px;
+        }
+
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+
+        .copyright {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #374151;
+            text-align: center;
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width: 1000px) {
+
+            .transaction-area {
+                display: none;
+            }
+
+
+            .categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .section {
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+
+
+            .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media(max-width: 650px) {
+
+            .navbar {
+                padding: 14px 5%;
+            }
+
+
+            .nav-links {
+                gap: 10px;
+            }
+
+
+            .nav-links .hide-mobile {
+                display: none;
+            }
+
+
+            .hero {
+                padding: 55px 7%;
+            }
+
+
+            .hero h1 {
+                font-size: 37px;
+            }
+
+
+            .hero p {
+                font-size: 15px;
+            }
+
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+
+            .categories {
+                grid-template-columns: 1fr;
+            }
+
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <a href="{% url 'home' %}" class="logo">
+        Market<span>Hub</span>
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+
+        <a href="{% url 'product_list' %}">
+            Products
+        </a>
+
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'my_orders' %}" class="hide-mobile">
+                My Orders
+            </a>
+
+
+            <a href="{% url 'cart' %}" class="hide-mobile">
+                🛒 Cart
+            </a>
+
+
+            <!-- NOTIFICATION -->
+
+            <div class="notification-wrapper">
+
+                <a href="{% url 'notifications' %}"
+                   class="notification-link"
+                   title="Notifications">
+
+                    <span class="notification-icon">
+                        🔔
+                    </span>
+
+
+                    {% if unread_notifications > 0 %}
+
+                        <span class="notification-badge">
+
+                            {% if unread_notifications > 99 %}
+                                99+
+                            {% else %}
+                                {{ unread_notifications }}
+                            {% endif %}
+
+                        </span>
+
+                    {% endif %}
+
+                </a>
+
+            </div>
+
+
+            <a href="{% url 'dashboard' %}" class="nav-button">
+                Dashboard
+            </a>
+
+
+            {% if user.is_staff %}
+
+                <a href="{% url 'admin_dashboard' %}"
+                   class="nav-link hide-mobile">
+                    Admin Dashboard
+                </a>
+
+
+                <a href="/admin/"
+                   class="nav-link hide-mobile">
+                    Admin
+                </a>
+
+            {% endif %}
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+
+            <a href="{% url 'register' %}" class="nav-button">
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            Welcome to MarketHub
+        </div>
+
+
+        <h1>
+            Discover.
+            Shop.
+            <span>Transact.</span>
+        </h1>
+
+
+        <p>
+            MarketHub is your trusted online marketplace where
+            customers can discover quality products, shop with
+            confidence, place orders and manage their purchases
+            from one convenient platform.
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a href="{% url 'product_list' %}"
+               class="primary-button">
+
+                🛒 Start Shopping
+
+            </a>
+
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'dashboard' %}"
+                   class="white-button">
+
+                    View My Dashboard
+
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'register' %}"
+                   class="white-button">
+
+                    Create Your Account
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- TRANSACTION VISUAL -->
+
+    <div class="transaction-area">
+
+        <div class="transaction-card">
+
+            <h4>
+                💳 Payment
+            </h4>
+
+            <div class="transaction-price">
+                ₦85,000
+            </div>
+
+            <p>
+                Marketplace transaction
+            </p>
+
+            <div class="transaction-status">
+                ✓ Transaction Complete
+            </div>
+
+        </div>
+
+
+        <div class="transaction-card">
+
+            <h4>
+                📦 Order Confirmed
+            </h4>
+
+            <p>
+                Your order has been successfully placed.
+            </p>
+
+            <div class="transaction-status">
+                ✓ Order Confirmed
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SHOP BY CATEGORY
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>
+            Shop by Category
+        </h2>
+
+        <p>
+            Find exactly what you need from our marketplace categories.
+        </p>
+
+    </div>
+
+
+    <div class="categories">
+
+
+        <a href="{% url 'product_list' %}?category=Fashion"
+           class="category-card">
+
+            <div class="category-icon">
+                👗
+            </div>
+
+            <h3>
+                Fashion
+            </h3>
+
+            <p>
+                Clothing, shoes, bags, accessories and more.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=House"
+           class="category-card">
+
+            <div class="category-icon">
+                🏠
+            </div>
+
+            <h3>
+                House & Home
+            </h3>
+
+            <p>
+                Furniture, kitchen items, decoration and home essentials.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=Electronics"
+           class="category-card">
+
+            <div class="category-icon">
+                📱
+            </div>
+
+            <h3>
+                Electronics
+            </h3>
+
+            <p>
+                Phones, gadgets, televisions, accessories and more.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=Beauty"
+           class="category-card">
+
+            <div class="category-icon">
+                💄
+            </div>
+
+            <h3>
+                Beauty
+            </h3>
+
+            <p>
+                Beauty products, skincare, haircare and personal care.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=Food"
+           class="category-card">
+
+            <div class="category-icon">
+                🛒
+            </div>
+
+            <h3>
+                Food & Groceries
+            </h3>
+
+            <p>
+                Everyday food items, groceries and household supplies.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=Sports"
+           class="category-card">
+
+            <div class="category-icon">
+                ⚽
+            </div>
+
+            <h3>
+                Sports & Fitness
+            </h3>
+
+            <p>
+                Sports equipment, fitness products and accessories.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=Books"
+           class="category-card">
+
+            <div class="category-icon">
+                📚
+            </div>
+
+            <h3>
+                Books & Education
+            </h3>
+
+            <p>
+                Books, educational materials and learning resources.
+            </p>
+
+        </a>
+
+
+        <a href="{% url 'product_list' %}?category=Computers"
+           class="category-card">
+
+            <div class="category-icon">
+                💻
+            </div>
+
+            <h3>
+                Computers & Accessories
+            </h3>
+
+            <p>
+                Laptops, computers, accessories and technology products.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     HOW TO SHOP
+========================================================= -->
+
+<section class="how-to">
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <h2>
+                How to Shop on MarketHub
+            </h2>
+
+            <p>
+                Shopping is simple. Follow these three steps.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <h3>
+                    Find a Product
+                </h3>
+
+                <p>
+                    Browse our categories or use the search
+                    feature to find the product you want to buy.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <h3>
+                    Add to Cart
+                </h3>
+
+                <p>
+                    Open the product details, check the price
+                    and available stock, then add the product
+                    to your shopping cart.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <h3>
+                    Place Your Order
+                </h3>
+
+                <p>
+                    Review your cart, proceed to checkout,
+                    provide your delivery information and
+                    place your order.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     LATEST PRODUCTS
+========================================================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>
+            Latest Products
+        </h2>
+
+        <p>
+            Explore products available from our marketplace.
+        </p>
+
+    </div>
+
+
+    <div class="products">
+
+        {% for product in products %}
+
+            <div class="product-card">
+
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                        <img
+                            src="{{ product.image.url }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+                            🛍️
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-category">
+                        {{ product.category }}
+                    </div>
+
+
+                    <h3>
+                        {{ product.name }}
+                    </h3>
+
+
+                    <div class="product-description">
+
+                        {% if product.description %}
+
+                            {{ product.description|truncatechars:90 }}
+
+                        {% else %}
+
+                            Quality product available on MarketHub.
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="product-bottom">
+
+                        <div class="product-price">
+                            ₦{{ product.price|floatformat:2 }}
+                        </div>
+
+
+                        <a
+                            href="{% url 'product_detail' product.id %}"
+                            class="product-button"
+                        >
+                            View Product
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        {% empty %}
+
+
+            <div style="
+                grid-column:1/-1;
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:12px;
+                padding:60px;
+                text-align:center;
+            ">
+
+                <div style="font-size:50px;">
+                    🛍️
+                </div>
+
+
+                <h3 style="margin:15px 0 8px;">
+                    No Products Available
+                </h3>
+
+
+                <p style="
+                    color:#6b7280;
+                    font-size:13px;
+                ">
+                    Products added through the admin panel
+                    will appear here.
+                </p>
+
+            </div>
+
+
+        {% endfor %}
+
+    </div>
+
+
+    <div style="
+        text-align:center;
+        margin-top:35px;
+    ">
+
+        <a
+            href="{% url 'product_list' %}"
+            class="primary-button"
+        >
+            View All Products
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     TRUST / MARKETPLACE
+========================================================= -->
+
+<section class="trust">
+
+    <div class="trust-grid">
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                🔐
+            </div>
+
+            <h3>
+                Secure Shopping
+            </h3>
+
+            <p>
+                Shop with confidence through a secure marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                🛒
+            </div>
+
+            <h3>
+                Easy Checkout
+            </h3>
+
+            <p>
+                Add products to your cart and complete your order easily.
+            </p>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                📦
+            </div>
+
+            <h3>
+                Order Tracking
+            </h3>
+
+            <p>
+                Keep track of your orders from your customer dashboard.
+            </p>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                🔔
+            </div>
+
+            <h3>
+                Notifications
+            </h3>
+
+            <p>
+                Receive important updates about your orders and account.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+
+        <div class="footer-brand">
+
+            <h2>
+                MarketHub
+            </h2>
+
+            <p>
+                Your modern online marketplace for discovering,
+                shopping and managing your orders in one convenient place.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+
+            <a href="{% url 'product_list' %}">
+                Products
+            </a>
+
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+
+
+                <a href="{% url 'my_orders' %}">
+                    My Orders
+                </a>
+
+
+                <a href="{% url 'cart' %}">
+                    Cart
+                </a>
+
+
+                <a href="{% url 'notifications' %}">
+                    Notifications
+                </a>
+
+
+                {% if user.is_staff %}
+
+                    <a href="{% url 'admin_dashboard' %}">
+                        Admin Dashboard
+                    </a>
+
+
+                    <a href="/admin/">
+                        Admin
+                    </a>
+
+                {% endif %}
+
+            {% else %}
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+
+                <a href="{% url 'register' %}">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 MarketHub. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>

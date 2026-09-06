@@ -1,0 +1,339 @@
+```html
+{% extends "admin/base_site.html" %}
+
+{% block title %}MarketHub Analytics{% endblock %}
+
+{% block content %}
+
+<style>
+
+.analytics-container {
+    padding: 10px 0 40px;
+}
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.analytics-header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.analytics-header p {
+    color: #777;
+    margin-top: 5px;
+}
+
+.back-button {
+    background: #417690;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    background: #315b70;
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 22px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.stat-title {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.stat-icon {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.analytics-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.analytics-card h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+.order-status {
+    margin-top: 15px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+.status-number {
+    font-weight: bold;
+}
+
+@media (max-width: 900px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+
+<div class="analytics-container">
+
+    <div class="analytics-header">
+
+        <div>
+            <h1>📊 MarketHub Analytics</h1>
+
+            <p>
+                Monitor your marketplace performance and activity.
+            </p>
+        </div>
+
+        <a href="{% url 'market_admin:index' %}" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MAIN STATISTICS -->
+    <!-- ========================= -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">💰</div>
+
+            <div class="stat-title">
+                Total Revenue
+            </div>
+
+            <div class="stat-value">
+                ₦{{ total_revenue|floatformat:2 }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">🛒</div>
+
+            <div class="stat-title">
+                Total Orders
+            </div>
+
+            <div class="stat-value">
+                {{ total_orders }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">👥</div>
+
+            <div class="stat-title">
+                Registered Users
+            </div>
+
+            <div class="stat-value">
+                {{ total_users }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">📦</div>
+
+            <div class="stat-title">
+                Products
+            </div>
+
+            <div class="stat-value">
+                {{ total_products }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ORDER ANALYTICS -->
+    <!-- ========================= -->
+
+    <div class="analytics-grid">
+
+        <div class="analytics-card">
+
+            <h2>📈 Marketplace Overview</h2>
+
+            <p>
+                Your MarketHub marketplace currently has
+                <strong>{{ total_products }}</strong>
+                products listed by sellers.
+            </p>
+
+            <p>
+                There are currently
+                <strong>{{ total_orders }}</strong>
+                orders in the system.
+            </p>
+
+            <p>
+                MarketHub has
+                <strong>{{ total_users }}</strong>
+                registered users.
+            </p>
+
+            <p>
+                Total recorded revenue is
+                <strong>₦{{ total_revenue|floatformat:2 }}</strong>.
+            </p>
+
+        </div>
+
+
+        <div class="analytics-card">
+
+            <h2>📦 Order Status</h2>
+
+            <div class="order-status">
+
+                <div class="status-row">
+                    <span>Pending</span>
+
+                    <span class="status-number">
+                        {{ pending_orders }}
+                    </span>
+                </div>
+
+
+                <div class="status-row">
+                    <span>Processing</span>
+
+                    <span class="status-number">
+                        {{ processing_orders }}
+                    </span>
+                </div>
+
+
+                <div class="status-row">
+                    <span>Completed</span>
+
+                    <span class="status-number">
+                        {{ completed_orders }}
+                    </span>
+                </div>
+
+
+                <div class="status-row">
+                    <span>Cancelled</span>
+
+                    <span class="status-number">
+                        {{ cancelled_orders }}
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- QUICK ANALYTICS -->
+    <!-- ========================= -->
+
+    <div class="analytics-card">
+
+        <h2>📊 Quick Business Summary</h2>
+
+        <p>
+            <strong>{{ total_users }}</strong>
+            registered customers/users
+        </p>
+
+        <p>
+            <strong>{{ total_products }}</strong>
+            products currently available
+        </p>
+
+        <p>
+            <strong>{{ total_orders }}</strong>
+            total orders placed
+        </p>
+
+        <p>
+            <strong>{{ completed_orders }}</strong>
+            successfully completed orders
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```

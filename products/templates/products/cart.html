@@ -1,0 +1,802 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Shopping Cart | MarketHub</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .cart-link {
+            background: #eff6ff;
+            color: #2563eb !important;
+            padding: 10px 16px;
+            border-radius: 10px;
+        }
+
+        .admin-link {
+            color: #7c3aed !important;
+        }
+
+        .logout-link {
+            color: #dc2626 !important;
+        }
+
+        .login-link {
+            color: #2563eb !important;
+        }
+
+        .register-link {
+            background: #2563eb;
+            color: white !important;
+            padding: 10px 16px;
+            border-radius: 10px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: 88%;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* ================= MESSAGES ================= */
+
+        .messages {
+            margin-bottom: 25px;
+        }
+
+        .message {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* ================= CART LAYOUT ================= */
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ================= CART ITEM ================= */
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .product-info p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .price {
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 8px;
+        }
+
+        /* ================= QUANTITY ================= */
+
+        .quantity-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid #dbe1ea;
+            background: #ffffff;
+            color: #2563eb;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .quantity {
+            min-width: 35px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* ================= SUBTOTAL ================= */
+
+        .item-total {
+            min-width: 130px;
+            text-align: right;
+        }
+
+        .item-total strong {
+            font-size: 17px;
+        }
+
+        .remove-btn {
+            display: block;
+            margin-top: 8px;
+            text-decoration: none;
+            color: #dc2626;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .remove-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 17px;
+            color: #6b7280;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+            margin-top: 20px;
+            color: #111827;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 15px;
+            border-radius: 11px;
+            font-weight: 700;
+            margin-top: 25px;
+            transition: 0.2s;
+        }
+
+        .checkout-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .continue-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            color: #2563eb;
+            background: #eff6ff;
+            padding: 14px;
+            border-radius: 11px;
+            font-weight: 700;
+            margin-top: 12px;
+        }
+
+        .continue-btn:hover {
+            background: #dbeafe;
+        }
+
+        /* ================= EMPTY CART ================= */
+
+        .empty-cart {
+            background: white;
+            border-radius: 18px;
+            padding: 70px 25px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .empty-cart h2 {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .empty-cart p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 70px;
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        footer p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+
+            .page {
+                width: 94%;
+                margin-top: 30px;
+            }
+
+            .cart-item {
+                flex-wrap: wrap;
+            }
+
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .item-total {
+                width: 100%;
+                text-align: left;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a
+        href="{% url 'home' %}"
+        class="logo"
+    >
+        MarketHub
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'product_list' %}">
+            Products
+        </a>
+
+        <a
+            href="{% url 'cart' %}"
+            class="cart-link"
+        >
+            🛒 Cart
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'my_orders' %}">
+                My Orders
+            </a>
+
+            {% if user.is_staff %}
+
+                <a
+                    href="/admin/"
+                    class="admin-link"
+                >
+                    Admin
+                </a>
+
+            {% endif %}
+
+            <!-- IMPORTANT:
+                 The URL name is "logout", NOT "user_logout"
+            -->
+
+            <a
+                href="{% url 'logout' %}"
+                class="logout-link"
+            >
+                Logout
+            </a>
+
+        {% else %}
+
+            <a
+                href="{% url 'login' %}"
+                class="login-link"
+            >
+                Login
+            </a>
+
+            <a
+                href="{% url 'register' %}"
+                class="register-link"
+            >
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="page">
+
+
+    <div class="page-header">
+
+        <h1>
+            Your Shopping Cart
+        </h1>
+
+        <p>
+            Review your items before placing your order.
+        </p>
+
+    </div>
+
+
+    <!-- ================= MESSAGES ================= -->
+
+    {% if messages %}
+
+        <div class="messages">
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    {% if cart_items %}
+
+
+        <div class="cart-layout">
+
+
+            <!-- ================= CART ITEMS ================= -->
+
+            <section class="cart-container">
+
+
+                {% for item in cart_items %}
+
+
+                    <div class="cart-item">
+
+
+                        <!-- PRODUCT IMAGE -->
+
+                        {% if item.product.image %}
+
+                            <img
+                                src="{{ item.product.image.url }}"
+                                alt="{{ item.product.name }}"
+                                class="product-image"
+                            >
+
+                        {% else %}
+
+                            <div class="product-image"></div>
+
+                        {% endif %}
+
+
+                        <!-- PRODUCT INFORMATION -->
+
+                        <div class="product-info">
+
+                            <h3>
+                                {{ item.product.name }}
+                            </h3>
+
+                            <p>
+                                {{ item.product.category }}
+                            </p>
+
+                            <div class="price">
+
+                                ₦{{ item.product.price|floatformat:2 }}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="quantity-area">
+
+
+                            <a
+                                href="{% url 'decrease_cart' item.product.id %}"
+                                class="quantity-btn"
+                                title="Decrease quantity"
+                            >
+                                −
+                            </a>
+
+
+                            <span class="quantity">
+
+                                {{ item.quantity }}
+
+                            </span>
+
+
+                            <a
+                                href="{% url 'increase_cart' item.product.id %}"
+                                class="quantity-btn"
+                                title="Increase quantity"
+                            >
+                                +
+                            </a>
+
+
+                        </div>
+
+
+                        <!-- TOTAL -->
+
+                        <div class="item-total">
+
+                            <strong>
+
+                                ₦{{ item.subtotal|floatformat:2 }}
+
+                            </strong>
+
+
+                            <a
+                                href="{% url 'remove_from_cart' item.product.id %}"
+                                class="remove-btn"
+                            >
+                                Remove
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </section>
+
+
+            <!-- ================= ORDER SUMMARY ================= -->
+
+            <aside class="summary">
+
+
+                <h2>
+                    Order Summary
+                </h2>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Items
+                    </span>
+
+                    <span>
+                        {{ cart_items|length }}
+                    </span>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <span>
+                        ₦{{ total|floatformat:2 }}
+                    </span>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <span>
+                        Free
+                    </span>
+
+                </div>
+
+
+                <div class="summary-row total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span>
+                        ₦{{ total|floatformat:2 }}
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="{% url 'checkout' %}"
+                    class="checkout-btn"
+                >
+                    Proceed to Checkout
+                </a>
+
+
+                <a
+                    href="{% url 'product_list' %}"
+                    class="continue-btn"
+                >
+                    Continue Shopping
+                </a>
+
+
+            </aside>
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- ================= EMPTY CART ================= -->
+
+        <section class="empty-cart">
+
+
+            <div class="empty-icon">
+                🛒
+            </div>
+
+
+            <h2>
+                Your cart is empty
+            </h2>
+
+
+            <p>
+                You haven't added any products to your cart yet.
+            </p>
+
+
+            <a
+                href="{% url 'product_list' %}"
+                class="shop-btn"
+            >
+                Start Shopping
+            </a>
+
+
+        </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 MarketHub. All rights reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
