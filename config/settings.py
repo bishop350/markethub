@@ -1,9 +1,21 @@
+
 from pathlib import Path
 import os
+
 import dj_database_url
 import cloudinary
 
+
+# ============================================================
+# BASE DIRECTORY
+# ============================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# ============================================================
+# SECURITY
+# ============================================================
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
@@ -11,6 +23,11 @@ SECRET_KEY = os.environ.get(
 )
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
+
+
+# ============================================================
+# ALLOWED HOSTS
+# ============================================================
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -35,9 +52,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # Cloudinary
     "cloudinary",
     "cloudinary_storage",
 
+    # MarketHub apps
     "products",
     "accounts",
 ]
@@ -50,14 +69,24 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
+
     "django.middleware.common.CommonMiddleware",
+
     "django.middleware.csrf.CsrfViewMiddleware",
+
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+
     "django.contrib.messages.middleware.MessageMiddleware",
+
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+# ============================================================
+# URL CONFIGURATION
+# ============================================================
 
 ROOT_URLCONF = "config.urls"
 
@@ -69,19 +98,29 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+
         "DIRS": [],
+
         "APP_DIRS": True,
+
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+
                 "django.contrib.auth.context_processors.auth",
+
                 "django.contrib.messages.context_processors.messages",
+
                 "products.context_processors.notification_context",
             ],
         },
     },
 ]
 
+
+# ============================================================
+# WSGI
+# ============================================================
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -108,14 +147,17 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME":
         "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
+
     {
         "NAME":
         "django.contrib.auth.password_validation.MinimumLengthValidator"
     },
+
     {
         "NAME":
         "django.contrib.auth.password_validation.CommonPasswordValidator"
     },
+
     {
         "NAME":
         "django.contrib.auth.password_validation.NumericPasswordValidator"
@@ -124,7 +166,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # ============================================================
-# LANGUAGE / TIME
+# INTERNATIONALIZATION
 # ============================================================
 
 LANGUAGE_CODE = "en-us"
@@ -144,13 +186,9 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
-
 
 # ============================================================
-# MEDIA / CLOUDINARY
+# MEDIA FILES
 # ============================================================
 
 MEDIA_URL = "/media/"
@@ -158,7 +196,10 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-# Cloudinary configuration
+# ============================================================
+# CLOUDINARY
+# ============================================================
+
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
 
 if CLOUDINARY_URL:
@@ -167,16 +208,35 @@ if CLOUDINARY_URL:
     )
 
 
-# Store uploaded media files in Cloudinary
-if CLOUDINARY_URL:
-    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+# ============================================================
+# DJANGO STORAGE
+#
+# Django 5.1+ uses STORAGES.
+# Uploaded images will be stored in Cloudinary.
+# Static files will continue using WhiteNoise/Django.
+# ============================================================
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 # ============================================================
-# DJANGO SETTINGS
+# DEFAULT PRIMARY KEY
 # ============================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ============================================================
+# LOGIN / LOGOUT
+# ============================================================
 
 LOGIN_URL = "/accounts/login/"
 
@@ -186,7 +246,7 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 # ============================================================
-# SESSION SETTINGS
+# SESSION
 # ============================================================
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
@@ -195,7 +255,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 
 # ============================================================
-# MESSAGES
+# DJANGO MESSAGE TAGS
 # ============================================================
 
 MESSAGE_TAGS = {
@@ -219,3 +279,17 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
 
     CSRF_COOKIE_SECURE = True
+
+
+# ============================================================
+# PAYSTACK
+# ============================================================
+
+PAYSTACK_SECRET_KEY = os.environ.get(
+    "PAYSTACK_SECRET_KEY"
+)
+
+PAYSTACK_PUBLIC_KEY = os.environ.get(
+    "PAYSTACK_PUBLIC_KEY"
+)
+
