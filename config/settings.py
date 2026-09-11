@@ -1,18 +1,9 @@
 from pathlib import Path
 import os
 import dj_database_url
-
-
-# =========================================================
-# BASE DIRECTORY
-# =========================================================
+import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# =========================================================
-# SECURITY
-# =========================================================
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
@@ -26,16 +17,15 @@ ALLOWED_HOSTS = [
     "localhost",
 ]
 
-# Render provides the public hostname through this variable
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
-# =========================================================
+# ============================================================
 # APPLICATIONS
-# =========================================================
+# ============================================================
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -45,21 +35,21 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "cloudinary",
+    "cloudinary_storage",
+
     "products",
     "accounts",
 ]
 
 
-# =========================================================
+# ============================================================
 # MIDDLEWARE
-# =========================================================
+# ============================================================
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-
-    # WhiteNoise serves static files in production
     "whitenoise.middleware.WhiteNoiseMiddleware",
-
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -69,16 +59,12 @@ MIDDLEWARE = [
 ]
 
 
-# =========================================================
-# URLS
-# =========================================================
-
 ROOT_URLCONF = "config.urls"
 
 
-# =========================================================
+# ============================================================
 # TEMPLATES
-# =========================================================
+# ============================================================
 
 TEMPLATES = [
     {
@@ -90,7 +76,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-
                 "products.context_processors.notification_context",
             ],
         },
@@ -98,21 +83,12 @@ TEMPLATES = [
 ]
 
 
-# =========================================================
-# WSGI
-# =========================================================
-
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# =========================================================
+# ============================================================
 # DATABASE
-# =========================================================
-
-# Render will provide DATABASE_URL.
-#
-# Locally, Django will continue using SQLite.
-# On Render, PostgreSQL will automatically be used.
+# ============================================================
 
 DATABASES = {
     "default": dj_database_url.config(
@@ -123,9 +99,9 @@ DATABASES = {
 }
 
 
-# =========================================================
+# ============================================================
 # PASSWORD VALIDATION
-# =========================================================
+# ============================================================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -147,9 +123,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# =========================================================
-# INTERNATIONALIZATION
-# =========================================================
+# ============================================================
+# LANGUAGE / TIME
+# ============================================================
 
 LANGUAGE_CODE = "en-us"
 
@@ -160,9 +136,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# =========================================================
+# ============================================================
 # STATIC FILES
-# =========================================================
+# ============================================================
 
 STATIC_URL = "/static/"
 
@@ -173,25 +149,34 @@ STATICFILES_STORAGE = (
 )
 
 
-# =========================================================
-# MEDIA FILES
-# =========================================================
+# ============================================================
+# MEDIA / CLOUDINARY
+# ============================================================
 
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-# =========================================================
-# DEFAULT PRIMARY KEY
-# =========================================================
+# Cloudinary configuration
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+
+if CLOUDINARY_URL:
+    cloudinary.config(
+        cloudinary_url=CLOUDINARY_URL
+    )
+
+
+# Store uploaded media files in Cloudinary
+if CLOUDINARY_URL:
+    DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+
+# ============================================================
+# DJANGO SETTINGS
+# ============================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-# =========================================================
-# LOGIN / LOGOUT
-# =========================================================
 
 LOGIN_URL = "/accounts/login/"
 
@@ -200,29 +185,30 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-# =========================================================
+# ============================================================
 # SESSION SETTINGS
-# =========================================================
+# ============================================================
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 SESSION_SAVE_EVERY_REQUEST = True
 
 
-# =========================================================
+# ============================================================
 # MESSAGES
-# =========================================================
+# ============================================================
 
 MESSAGE_TAGS = {
-    40: "danger",
+    40: "danger"
 }
 
 
-# =========================================================
+# ============================================================
 # PRODUCTION SECURITY
-# =========================================================
+# ============================================================
 
 if not DEBUG:
+
     CSRF_TRUSTED_ORIGINS = []
 
     if RENDER_EXTERNAL_HOSTNAME:
@@ -231,4 +217,5 @@ if not DEBUG:
         )
 
     SESSION_COOKIE_SECURE = True
+
     CSRF_COOKIE_SECURE = True
